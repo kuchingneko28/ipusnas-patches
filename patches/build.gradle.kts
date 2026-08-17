@@ -4,7 +4,7 @@ patches {
     about {
         name = "iPusnas Patches"
         description = "Patches for the iPusnas digital library app."
-        source = "git@github.com:kuchingneko/ipusnas-patches.git"
+        source = "git@github.com:kuchingneko28/ipusnas-patches.git"
         author = "kuchingneko"
         contact = "na"
         website = "na"
