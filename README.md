@@ -13,23 +13,26 @@ pipeline documented in `research/docs/modifications.md`.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
+> **[v1.0.0](https://github.com/kuchingneko28/ipusnas-patches/releases/tag/v1.0.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;6 patches total
+<details open>
+<summary>📦 iPusnas&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<br>
 
-- **Save book to Downloads** — Adds a "Simpan ke Unduhan" entry to the book
-  detail overflow menu. Tapping it runs the app's own download + decrypt flow
-  and copies the readable PDF/EPUB into the public Downloads folder via
-  MediaStore (works on Android 10+ scoped storage, no permissions needed).
-- **Remove screenshot restriction** — Disables the `FLAG_SECURE` window flag in
-  the PDF (Radaee `PDFViewAct`) and EPUB (FolioReader `FolioActivity`) readers,
-  so screenshots and screen recordings of books work normally.
+**🎯 Supported versions:**
 
-- **Disable Firebase Analytics and FCM** — Removes Firebase Analytics
-  collection and Firebase Cloud Messaging (push notification) components from
-  the manifest, and neutralizes the in-app FCM token registration.
-- **Neuter Telegram security breach reporter** — Stops the app from reporting
-  security breaches or APK integrity failures to the developers' Telegram
-  channel.
-- **Remove certificate pinning** — Removes the hard-coded OkHttp certificate
-  pins and the SSL pinning interceptor so the app trusts system and user CAs.
+| 2.1.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Bypass Play Store redirect](#bypass-play-store-redirect) | Makes the PairIP license check pass for sideloaded installs so the app no longer redirects to the Play Store and closes. |  |
+| [Disable Firebase Analytics and FCM](#disable-firebase-analytics-and-fcm) | Disables Google Firebase Analytics tracking and removes Firebase Cloud Messaging push notifications. |  |
+| [Neuter Telegram security breach reporter](#neuter-telegram-security-breach-reporter) | Stops the app from reporting security breaches or APK integrity failures to the developers' Telegram channel. |  |
+| [Remove certificate pinning](#remove-certificate-pinning) | Removes the hard-coded OkHttp certificate pins and SSL pinning interceptor so the app trusts system and user CAs. |  |
+| [Remove screenshot restriction](#remove-screenshot-restriction) | Disables the FLAG_SECURE window flag in the PDF and EPUB readers so screenshots and screen recordings are allowed. |  |
+| [Save book to Downloads](#save-book-to-downloads) | Adds a menu option that downloads, decrypts, and saves the book as a readable PDF or EPUB in the public Downloads folder. |  |
+
+</details>
 
 <!-- PATCHES_END -->
 
