@@ -1,12 +1,11 @@
-group = "app.template"
+group = "app.ipusnas"
 
 patches {
-    // TODO: Update this section with your project details.
     about {
-        name = "UserXYZ Patches"
-        description = "Patches for apps I like"
-        source = "git@github.com:UserXYZ/morphe-patches.git"
-        author = "Awesome dev"
+        name = "iPusnas Patches"
+        description = "Patches for the iPusnas digital library app."
+        source = "git@github.com:kuchingneko/ipusnas-patches.git"
+        author = "kuchingneko"
         contact = "na"
         website = "na"
         license = "GPLv3"
@@ -25,7 +24,9 @@ val patchListGeneratorClasspath = configurations.create("patchListGeneratorClass
 
 dependencies {
     compileOnly(libs.gson)
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     patchListGeneratorClasspath(libs.gson)
+    patchListGeneratorClasspath("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
 
 tasks {
@@ -36,6 +37,15 @@ tasks {
 
         classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
         mainClass.set("util.PatchListGeneratorKt")
+    }
+
+    register<JavaExec>("verifyPatches") {
+        description = "Apply all patches to an APK and report fingerprint matches"
+
+        dependsOn(build)
+
+        classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
+        mainClass.set("util.VerifyPatchesKt")
     }
 
     // Used by gradle-semantic-release-plugin.

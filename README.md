@@ -1,91 +1,63 @@
-# 👋🧩 Morphe Patches template
+# 👋🧩 iPusnas Patches
 
-Template repository for Morphe Patches.
+Morphe patches for the **iPusnas** digital library app
+(`mam.reader.ipusnas`, v2.1.4).
 
 ## ❓ About
 
-Patches for apps I like.
-
-<!-- TODO: Update this about section with a brief introduction/summary about this repo and what it offers. -->
-
-### How to use these patches
-
-Click here to add these patches to Morphe: https://morphe.software/add-source?github=xyz-user/xyz-patches
+A set of patches that improve privacy and add a "Save to Downloads" feature
+to the iPusnas e-reader app. These patches are applied with
+[Morphe](https://morphe.software) and are based on the manual smali modding
+pipeline documented in `research/docs/modifications.md`.
 
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
 
-<!-- Do not modify this section by hand. The patch list is generated when release.yml creates a new release.
-     
-     If you wish for the patches list to be collapsed, then remove the word 'EXPANDED' from the comment tag above.
+- **Save book to Downloads** — Adds a "Simpan ke Unduhan" entry to the book
+  detail overflow menu. Tapping it runs the app's own download + decrypt flow
+  and copies the readable PDF/EPUB into the public Downloads folder via
+  MediaStore (works on Android 10+ scoped storage, no permissions needed).
+- **Remove screenshot restriction** — Disables the `FLAG_SECURE` window flag in
+  the PDF (Radaee `PDFViewAct`) and EPUB (FolioReader `FolioActivity`) readers,
+  so screenshots and screen recordings of books work normally.
 
-     If you wish to manually keep this list updated then remove the PATCHES_START and PATCHES_END 
-     comment blocks entirely. -->
+- **Disable Firebase Analytics and FCM** — Removes Firebase Analytics
+  collection and Firebase Cloud Messaging (push notification) components from
+  the manifest, and neutralizes the in-app FCM token registration.
+- **Neuter Telegram security breach reporter** — Stops the app from reporting
+  security breaches or APK integrity failures to the developers' Telegram
+  channel.
+- **Remove certificate pinning** — Removes the hard-coded OkHttp certificate
+  pins and the SSL pinning interceptor so the app trusts system and user CAs.
 
-#### A list of your patches will automatically be shown here after your first patches release is created.
-
-&nbsp;
+<!-- PATCHES_END -->
 
 ## 🚀 Getting development started
 
-To start using this template, follow these steps:
+1. [Setup](https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md)
+   your development environment, including a GitHub PAT with `read:packages`
+   scope (used to resolve the `app.morphe.patches` Gradle plugin). Add it to
+   `~/.gradle/gradle.properties` as `gpr.user` / `gpr.key` or export
+   `GITHUB_ACTOR` / `GITHUB_TOKEN`. An Android SDK is also required
+   (`local.properties` with `sdk.dir=...`).
+2. Build the patch bundle:
+   ```bash
+   ./gradlew buildAndroid
+   # Output: patches/build/libs/patches-*.mpp
+   ```
+3. Apply it with [Morphe-Desktop](https://github.com/MorpheApp/morphe-desktop)
+   like any other patch bundle.
 
-1. [Setup](https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md) your development environment including adding a GitHub PAT as described [here](https://github.com/MorpheApp/morphe-patcher/blob/main/docs/2_1_setup.md#-prepare-the-environment).
-2. [Create a new repository using this template](https://github.com/new?template_name=morphe-patches-template&template_owner=MorpheApp). Select create a new repository, and **enable 'Include all branches'** 
-3. Enable "Allow GitHub Actions to create and approve pull requests" in your repo Settings > Actions > General > Workflow permissions
-4. Update the [build.gradle.kts](patches/build.gradle.kts) file (Specifically, the 
-   [group of the project](patches/build.gradle.kts#L1), and the [About](patches/build.gradle.kts#L6-L11))
-5. Update the [README.md](README.md) file to be specific of your repo, and update the links in the [issue templates](.github/ISSUE_TEMPLATE).
-6. Choose a name for your patches project. Keep in mind you must use a name that does not 
-   imply authorship by the Morphe open source project. If unsure, then simply name these
-   patches after yourself ("UserXYZ Morphe patches"). See the [NOTICE](NOTICE) for details. 
-7. (Optional): Add `patches-bundle.png` to the project if you want a custom icon to show in
-   Morphe Manager instead of your GitHub profile avatar.
+### 🛠️ Verifying against a real APK
 
-🎉 You are now ready to start creating patches!
+A small harness applies every patch to a real APK and reports whether each
+fingerprint matched:
 
-## 🧑‍💻 Dev usage
-
-To develop and release your Patches using this template:
-
-- **Make all changes to the `dev` branch.**
-- For local development work build your patches using the gradle task `./gradlew buildAndroid` to generate the mpp file found in `patches/build/libs/patches-*.mpp`. Apply your patches locally using Morphe Desktop tool like any other patch bundle.
-- Always use [Semantic commit](https://kapeli.com/cheat_sheets/Semantic_Commits.docset/Contents/Resources/Documents/index) messages for commits. To keep it simple use only 3 commit message types: 
-  - `feat: Added a new feature`
-  - `fix: Some problem now fixed`
-  - `chore: Random change you do not want in the user facing changelog`
-- Commits of `fix:` and `feat:` will automatically generate new pre-releases and `chore:` will not create a new release.
-- Users can apply your dev branch releases by enabling `pre-release` in Morphe Manager patch sources.
-- When your dev branch is ready, and you want a stable release, merge dev branch to main (do not squash, and only merge).
-- **Always use semantic release (release.yml)**. Do not manually upload or create releases by hand
-  because many files must be updated and release.yml handles everything.
-
-## 🤓 Tips
-- See the [patcher documentation](https://github.com/MorpheApp/morphe-patcher/blob/main/docs/1_patcher_intro.md) for more examples of creating patches and fingerprints.
-- Do not use AI to create new release scripts. The `release.yml` here already handles everything.
-  If you need omething custom with your releases then modify the existing `release.yml`
-  and `.releaserc` instead of writing everything new from scratch.
-- Do not manually edit or manually commit any generated files such as: `patches-list.json`,
-  `patches-bundle.json`, `CHANGELOG.md`.  These files will be automatically updated by `release.yml`.
-- Do not force push any semantic release commits as that will break all future releases.
-  If you need to fix a broken release, it's always easiest to create a new release instead of 
-  fixing an existing release.
-
-
-<!-- The patches end tag is intentionally placed here so the first release will clean up 
-     this readme of all developer instructions above. -->
-<!-- PATCHES_END -->
-
-### 🛠️ Building locally
-
-- Run `./gradlew buildAndroid`
-- The built patches .mpp file is found in `patches/build/libs/patches-*.mpp`
-- Patch the mpp file using [Morphe-Desktop](https://github.com/MorpheApp/morphe-desktop)
-  like any other patch bundle.
-
-See the [Morphe documentation](https://github.com/MorpheApp/morphe-documentation) for more information.
+```bash
+./gradlew :patches:verifyPatches --args="path/to/base.apk build/verify-output"
+```
 
 ## 📜 License
 
-UserXYZ Patches are licensed under the [GNU General Public License v3.0](LICENSE)
+GPLv3 — see [LICENSE](LICENSE).
